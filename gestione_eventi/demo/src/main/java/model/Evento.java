@@ -1,13 +1,38 @@
 package model;
-import java.time.LocalDate;
 
+import java.time.LocalDate;
+import java.util.List;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.Table;
+
+@Entity
+@Table(name = "eventi")
 public class Evento {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(name = "nome")
     private String nome;
+    @Column(name = "descrizione")
     private String descrizione;
+    @Column(name = "categoria")
     private String categoria;
+    @Column(name = "data")
     private LocalDate data;
+
+    @ManyToMany
+    @JoinTable(name = "partecipanti", joinColumns = @JoinColumn(name = "id_evento", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "id_utente", referencedColumnName = "id"))
+    private List<Utente> utenti;
 
     public Evento() {
 
@@ -62,4 +87,5 @@ public class Evento {
         return "Evento [id=" + id + ", nome=" + nome + ", descrizione=" + descrizione + ", categoria=" + categoria
                 + ", data=" + data + "]";
     }
+
 }
